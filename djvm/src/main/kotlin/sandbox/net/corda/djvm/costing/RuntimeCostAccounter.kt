@@ -3,6 +3,7 @@ package sandbox.net.corda.djvm.costing
 import net.corda.djvm.SandboxRuntimeContext
 import net.corda.djvm.costing.RuntimeCostSummary
 import net.corda.djvm.costing.ThresholdViolationException
+import net.corda.djvm.rules.RuleViolationException
 
 /**
  * Class for keeping a tally on various runtime metrics, like number of jumps, allocations, invocations, etc. The
@@ -39,10 +40,8 @@ object RuntimeCostAccounter {
      */
     @JvmStatic
     fun checkCatch(exception: Throwable) {
-        if (exception is ThreadDeath) {
-            throw exception
-        } else if (exception is ThresholdViolationException) {
-            throw exception
+        when (exception) {
+            is ThreadDeath, is RuleViolationException -> throw exception
         }
     }
 

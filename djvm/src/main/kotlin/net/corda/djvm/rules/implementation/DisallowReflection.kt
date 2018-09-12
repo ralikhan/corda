@@ -18,7 +18,8 @@ class DisallowReflection : InstructionRule() {
                     ("java/lang/Class" in instruction.owner && instruction.memberName == "newInstance")
             invalidReflectionUsage(instruction) given (instruction.owner.startsWith("java/lang/reflect/"))
             invalidReflectionUsage(instruction) given (instruction.owner.startsWith("java/lang/invoke/"))
-            invalidReflectionUsage(instruction) given (instruction.owner.startsWith("sun/"))
+            invalidReflectionUsage(instruction) given (instruction.owner.startsWith("sun/reflect/"))
+            invalidReflectionUsage(instruction) given (instruction.owner == "sun/misc/Unsafe" || instruction.owner == "sun/misc/VM")
         }
     }
 
